@@ -6,6 +6,8 @@
     <meta name="description" content="Профессиональные высотные работы в Костроме и ближайших областях. Утепление фасадов, герметизация швов, мойка окон, чистка кровли. Гарантия, работаем по договору. Звоните 8-952-233-91-45!">
     <meta name="keywords" content="промышленный альпинизм, Кострома, высотные работы, утепление фасада, герметизация швов, мойка окон, чистка кровли, монтаж кондиционеров, спил деревьев, альпинисты Кострома">
     <meta name="author" content="ПромАльп44/37">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🏔️%3C/text%3E%3C/svg%3E">
@@ -39,71 +41,59 @@
                 </div>
             </a>
 
-            <!-- Мега-меню -->
             <nav class="nav">
                 <button class="mobile-toggle" id="mobile-toggle">
                     <i class="fas fa-bars"></i>
                 </button>
-                <li class="nav-item dropdown">
-                    <a href="services.html" class="nav-link dropdown-toggle">Услуги <i class="fas fa-chevron-down"></i></a>
-                    <div class="mega-menu mega-menu--services">
-                        <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
-                            <div class="mega-menu__column">
-                                <h4><i class="fas fa-building"></i> Фасадные работы</h4>
-                                <ul>
-                                    <li><a href="services.html?tab=facade">Утепление фасада</a></li>
-                                    <li><a href="services.html?tab=facade">Герметизация швов</a></li>
-                                    <li><a href="services.html?tab=facade">Покраска фасада</a></li>
-                                    <li><a href="services.html?tab=facade">Мойка окон</a></li>
-                                    <li><a href="services.html?tab=facade">Мойка фасада</a></li>
-                                </ul>
-                                <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
-                                <ul>
-                                    <li><a href="services.html?tab=roof">Чистка снега</a></li>
-                                    <li><a href="services.html?tab=roof">Удаление наледи</a></li>
-                                    <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
-                                    <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
-                                    <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
-                                </ul>
-                            </div>
-                            <div class="mega-menu__column">
-                                <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
-                                <ul>
-                                    <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
-                                    <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
-                                </ul>
-                                <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
-                                <ul>
-                                    <li><a href="services.html?tab=other">Демонтажные работы</a></li>
-                                    <li><a href="services.html?tab=other">Спил деревьев</a></li>
-                                </ul>
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link active">Главная</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a href="services.html" class="nav-link">Услуги <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--services">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-building"></i> Фасадные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=facade">Утепление фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Герметизация швов</a></li>
+                                        <li><a href="services.html?tab=facade">Покраска фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка окон</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка фасада</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=roof">Чистка снега</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление наледи</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
+                                        <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
+                                        <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
+                                        <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=other">Демонтажные работы</a></li>
+                                        <li><a href="services.html?tab=other">Спил деревьев</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+
                     <li class="nav-item"><a href="portfolio.html" class="nav-link">Наши работы</a></li>
 
-                    <!-- Выпадающее меню Информация -->
                     <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle">Информация <i class="fas fa-chevron-down"></i></a>
+                        <a href="#" class="nav-link">Информация <i class="fas fa-chevron-down"></i></a>
                         <div class="mega-menu mega-menu--info">
                             <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 500px;">
-                                <div class="mega-menu__column">
-                                    <h4><i class="fas fa-toolbox"></i> Полезное</h4>
-                                    <ul>
-                                        <li><a href="useful.html">Снаряжение альпиниста</a></li>
-                                        <li><a href="useful.html#calculator">Калькулятор стоимости</a></li>
-                                    </ul>
-                                </div>
-                                <div class="mega-menu__column">
-                                    <h4><i class="fas fa-book-open"></i> Статьи</h4>
-                                    <ul>
-                                        <li><a href="articles.html">Все статьи</a></li>
-                                        <li><a href="articles.html?page=1">Технологии работ</a></li>
-                                        <li><a href="articles.html?page=2">Безопасность</a></li>
-                                        <li><a href="articles.html?page=3">Советы экспертов</a></li>
-                                    </ul>
-                                </div>
+                                <div class="mega-menu__column"><h4><i class="fas fa-toolbox"></i> Полезное</h4><ul><li><a href="useful.html">Снаряжение</a></li><li><a href="useful.html#calculator">Калькулятор</a></li></ul></div>
+                                <div class="mega-menu__column"><h4><i class="fas fa-book-open"></i> Статьи</h4><ul><li><a href="articles.html">Все статьи</a></li><li><a href="articles.html?page=1">Технологии</a></li><li><a href="articles.html?page=2">Безопасность</a></li><li><a href="articles.html?page=3">Советы</a></li></ul></div>
                             </div>
                         </div>
                     </li>
@@ -120,8 +110,8 @@
             <div class="slide active">
                 <div class="slide__bg" style="background-image: url('https://www.gryazi.net/images/cleaning/prom_alp.jpg');"></div>
                 <div class="container slide__content">
-                    <h1 class="slide__title">Промышленный альпинизм<br>в Костроме и ближайших областях</h1>
-                    <p class="slide__subtitle">Более 500 выполненных объектов. Профессиональный подход к каждому проекту.</p>
+                    <h1 class="slide__title">Высотные работы<br>в Костроме и области</h1>
+                    <p class="slide__subtitle">Более 500 выполненных объектов. Индивидуальный подход к каждому проекту.</p>
                     <div class="slide__buttons">
                         <a href="services.html" class="btn btn-primary">Смотреть услуги</a>
                         <a href="contacts.html" class="btn btn-outline-white">Рассчитать стоимость</a>
@@ -245,41 +235,11 @@
                     <p class="advantages__subtitle">Компания «ПромАльп44/37» оказывает полный спектр услуг высотных работ в Костроме и ближайших областях.</p>
 
                     <div class="advantages__list">
-                        <div class="advantage-item">
-                            <i class="fas fa-file-contract"></i>
-                            <div>
-                                <h4>Работаем без посредников</h4>
-                                <p>Прямые договоры — никаких переплат и лишних звеньев</p>
-                            </div>
-                        </div>
-                        <div class="advantage-item">
-                            <i class="fas fa-medal"></i>
-                            <div>
-                                <h4>Опыт более 10 лет</h4>
-                                <p>Сотни реализованных проектов любой сложности</p>
-                            </div>
-                        </div>
-                        <div class="advantage-item">
-                            <i class="fas fa-shield-alt"></i>
-                            <div>
-                                <h4>Оборудование сертифицировано</h4>
-                                <p>Всё снаряжение проходит регулярную проверку</p>
-                            </div>
-                        </div>
-                        <div class="advantage-item">
-                            <i class="fas fa-clock"></i>
-                            <div>
-                                <h4>Срочный выезд</h4>
-                                <p>Выезд на объект в день обращения</p>
-                            </div>
-                        </div>
-                        <div class="advantage-item">
-                            <i class="fas fa-award"></i>
-                            <div>
-                                <h4>Гарантия</h4>
-                                <p>Письменная гарантия на все виды выполненных работ</p>
-                            </div>
-                        </div>
+                        <div class="advantage-item"><i class="fas fa-file-contract"></i><div><h4>Работаем без посредников</h4><p>Прямые договоры — никаких переплат и лишних звеньев</p></div></div>
+                        <div class="advantage-item"><i class="fas fa-medal"></i><div><h4>Опыт более 10 лет</h4><p>Сотни реализованных проектов любой сложности</p></div></div>
+                        <div class="advantage-item"><i class="fas fa-shield-alt"></i><div><h4>Оборудование сертифицировано</h4><p>Всё снаряжение проходит регулярную проверку</p></div></div>
+                        <div class="advantage-item"><i class="fas fa-clock"></i><div><h4>Срочный выезд</h4><p>Выезд на объект в день обращения</p></div></div>
+                        <div class="advantage-item"><i class="fas fa-award"></i><div><h4>Гарантия</h4><p>Письменная гарантия на все виды выполненных работ</p></div></div>
                     </div>
                 </div>
                 <div class="advantages__image">
@@ -294,38 +254,12 @@
         <div class="container">
             <h2 class="section-title">Порядок работы</h2>
             <p class="section-subtitle">Как мы работаем — просто и прозрачно</p>
-
             <div class="workflow__steps">
-                <div class="step">
-                    <div class="step__number">01</div>
-                    <div class="step__icon"><i class="fas fa-phone-alt"></i></div>
-                    <h4>Заявка или звонок</h4>
-                    <p>Оставляете заявку на сайте или звоните по телефону</p>
-                </div>
-                <div class="step">
-                    <div class="step__number">02</div>
-                    <div class="step__icon"><i class="fas fa-ruler"></i></div>
-                    <h4>Бесплатный выезд</h4>
-                    <p>Выезжаем на объект, делаем замеры и оценку</p>
-                </div>
-                <div class="step">
-                    <div class="step__number">03</div>
-                    <div class="step__icon"><i class="fas fa-file-signature"></i></div>
-                    <h4>Договор</h4>
-                    <p>Составим договор и подсчитаем материалы</p>
-                </div>
-                <div class="step">
-                    <div class="step__number">04</div>
-                    <div class="step__icon"><i class="fas fa-tools"></i></div>
-                    <h4>Выполнение работ</h4>
-                    <p>Выполняем работы качественно и в срок</p>
-                </div>
-                <div class="step">
-                    <div class="step__number">05</div>
-                    <div class="step__icon"><i class="fas fa-check-circle"></i></div>
-                    <h4>Сдача объекта</h4>
-                    <p>Сдаём работу, подписываем акт, даём гарантию</p>
-                </div>
+                <div class="step"><div class="step__number">01</div><div class="step__icon"><i class="fas fa-phone-alt"></i></div><h4>Заявка или звонок</h4><p>Оставляете заявку на сайте или звоните по телефону</p></div>
+                <div class="step"><div class="step__number">02</div><div class="step__icon"><i class="fas fa-ruler"></i></div><h4>Бесплатный выезд</h4><p>Выезжаем на объект, делаем замеры и оценку</p></div>
+                <div class="step"><div class="step__number">03</div><div class="step__icon"><i class="fas fa-file-signature"></i></div><h4>Договор</h4><p>Составим договор и подсчитаем материалы</p></div>
+                <div class="step"><div class="step__number">04</div><div class="step__icon"><i class="fas fa-tools"></i></div><h4>Выполнение работ</h4><p>Выполняем работы качественно и в срок</p></div>
+                <div class="step"><div class="step__number">05</div><div class="step__icon"><i class="fas fa-check-circle"></i></div><h4>Сдача объекта</h4><p>Сдаём работу, подписываем акт, даём гарантию</p></div>
             </div>
         </div>
     </section>
@@ -338,15 +272,9 @@
                     <h2>Рассчитайте стоимость работ</h2>
                     <p>Оставьте заявку, и мы сделаем точный расчёт</p>
                     <p class="min-order"><strong>Минимальный заказ — 10 000 ₽</strong></p>
-
                     <form class="calculator-form" id="home-calculator">
-                        <div class="form-row">
-                            <select class="form-control" id="home-service-select"></select>
-                        </div>
-                        <div class="form-row form-row--double">
-                            <input type="text" class="form-control" placeholder="Ваше имя">
-                            <input type="tel" class="form-control" placeholder="Телефон">
-                        </div>
+                        <div class="form-row"><select class="form-control" id="home-service-select"></select></div>
+                        <div class="form-row form-row--double"><input type="text" class="form-control" placeholder="Ваше имя"><input type="tel" class="form-control" placeholder="Телефон"></div>
                         <button type="submit" class="btn btn-primary btn-block">Получить расчёт</button>
                         <p class="form-note">Нажимая кнопку, вы соглашаетесь с обработкой данных</p>
                     </form>
@@ -362,57 +290,17 @@
     <footer class="footer">
         <div class="container">
             <div class="footer__top">
-                <div class="footer__col">
-                    <div class="footer__logo">
-                        <i class="fas fa-mountain"></i>
-                        <span>ПромАльп44/37</span>
-                    </div>
-                    <p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p>
-                    <div class="footer__social">
-                        <a href="#"><i class="fab fa-vk"></i></a>
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-                <div class="footer__col">
-                    <h4>Услуги</h4>
-                    <ul>
-                        <li><a href="services.html?tab=facade">Фасадные работы</a></li>
-                        <li><a href="services.html?tab=roof">Кровельные работы</a></li>
-                        <li><a href="services.html?tab=mount">Монтажные работы</a></li>
-                        <li><a href="services.html?tab=other">Прочие услуги</a></li>
-                    </ul>
-                </div>
-                <div class="footer__col">
-                    <h4>Навигация</h4>
-                    <ul>
-                        <li><a href="index.html">Главная</a></li>
-                        <li><a href="services.html">Услуги</a></li>
-                        <li><a href="portfolio.html">Наши работы</a></li>
-                        <li><a href="contacts.html">Контакты</a></li>
-                    </ul>
-                </div>
-                <div class="footer__col">
-                    <h4>Контакты</h4>
-                    <ul class="footer__contacts">
-                        <li><i class="fas fa-phone-alt"></i> <a href="tel:+79522339145">8-952-233-91-45</a></li>
-                        <li><i class="fas fa-envelope"></i> <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li>
-                        <li><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</li>
-                    </ul>
-                </div>
+                <div class="footer__col"><div class="footer__logo"><i class="fas fa-mountain"></i><span>ПромАльп44/37</span></div><p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p><div class="footer__social"><a href="#"><i class="fab fa-vk"></i></a><a href="#"><i class="fab fa-telegram"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a></div></div>
+                <div class="footer__col"><h4>Услуги</h4><ul><li><a href="services.html?tab=facade">Фасадные работы</a></li><li><a href="services.html?tab=roof">Кровельные работы</a></li><li><a href="services.html?tab=mount">Монтажные работы</a></li><li><a href="services.html?tab=other">Прочие услуги</a></li></ul></div>
+                <div class="footer__col"><h4>Навигация</h4><ul><li><a href="index.html">Главная</a></li><li><a href="services.html">Услуги</a></li><li><a href="portfolio.html">Наши работы</a></li><li><a href="useful.html">Полезное</a></li><li><a href="articles.html">Статьи</a></li><li><a href="contacts.html">Контакты</a></li></ul></div>
+                <div class="footer__col"><h4>Контакты</h4><ul class="footer__contacts"><li><i class="fas fa-phone-alt"></i> <a href="tel:+79522339145">8-952-233-91-45</a></li><li><i class="fas fa-envelope"></i> <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li><li><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</li></ul></div>
             </div>
-            <div class="footer__bottom">
-                <p>© 2026 ПромАльп44/37. Все права защищены.</p>
-                <p>Промышленный альпинизм в Костроме и ближайших областях</p>
-            </div>
+            <div class="footer__bottom"><p>© 2026 ПромАльп44/37. Все права защищены.</p><p>Промышленный альпинизм в Костроме и ближайших областях</p></div>
         </div>
     </footer>
 
     <!-- Кнопка ВК -->
-    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank">
-        <i class="fab fa-vk"></i>
-        <span>Написать ВКонтакте</span>
-    </a>
+    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank"><i class="fab fa-vk"></i><span>Написать ВКонтакте</span></a>
 
     <script src="script.js"></script>
 </body>
