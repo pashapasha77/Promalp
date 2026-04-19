@@ -933,11 +933,24 @@ ul, ol {
 }
 
 @media (max-width: 768px) {
-    .top-bar__container { flex-direction: column; text-align: center; }
-    .top-bar__left { flex-direction: column; gap: 5px; }
-    .top-bar__right { flex-wrap: wrap; justify-content: center; }
+    .top-bar__container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .top-bar__left {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .top-bar__right {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-    .mobile-toggle { display: block; }
+    /* Мобильное меню — бургер */
+    .mobile-toggle {
+        display: block;
+    }
+
     .nav-menu {
         display: none;
         position: absolute;
@@ -948,23 +961,72 @@ ul, ol {
         flex-direction: column;
         padding: 20px;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        z-index: 1000;
     }
-    .nav-menu.active { display: flex; }
-    .mega-menu { display: none !important; }
-    .nav-item.dropdown:hover .mega-menu { display: none !important; }
 
-    .slide__title { font-size: 32px; }
-    .slide__subtitle { font-size: 16px; }
-    .slider-arrow { display: none; }
+    .nav-menu.active {
+        display: flex;
+    }
 
-    .services-tiles__grid { grid-template-columns: 1fr; }
-    .stats__grid { grid-template-columns: 1fr; }
-    .workflow__steps { grid-template-columns: 1fr; }
-    .footer__top { grid-template-columns: 1fr; }
-    .footer__bottom { flex-direction: column; text-align: center; gap: 10px; }
+    .nav-item {
+        width: 100%;
+    }
 
-    .vk-button span { display: none; }
-    .vk-button { padding: 14px; border-radius: 50%; }
+    .nav-link {
+        padding: 15px 0;
+        width: 100%;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-item:last-child .nav-link {
+        border-bottom: none;
+    }
+
+    /* Выпадающее меню на мобильных */
+    .mega-menu {
+        display: none !important;
+    }
+
+    .nav-item.dropdown:hover .mega-menu {
+        display: none !important;
+    }
+
+    .slide__title {
+        font-size: 32px;
+    }
+    .slide__subtitle {
+        font-size: 16px;
+    }
+    .slider-arrow {
+        display: none;
+    }
+
+    .services-tiles__grid {
+        grid-template-columns: 1fr;
+    }
+    .stats__grid {
+        grid-template-columns: 1fr;
+    }
+    .workflow__steps {
+        grid-template-columns: 1fr;
+    }
+    .footer__top {
+        grid-template-columns: 1fr;
+    }
+    .footer__bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .vk-button span {
+        display: none;
+    }
+    .vk-button {
+        padding: 14px;
+        border-radius: 50%;
+    }
 }
 
 @media (max-width: 480px) {
