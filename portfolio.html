@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши работы — ПромАльп44/37</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🏔️%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .portfolio-content {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: var(--light);
+            border: none;
+            border-radius: 40px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn i {
+            margin-right: 8px;
+        }
+
+        .filter-btn:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .portfolio-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .portfolio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .portfolio-card__image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .portfolio-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .portfolio-card:hover .portfolio-card__image img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-card__category {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .portfolio-card__content {
+            padding: 25px 20px;
+        }
+
+        .portfolio-card__title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .portfolio-card__desc {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .portfolio-card__meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        .portfolio-card__meta i {
+            color: var(--secondary);
+            margin-right: 5px;
+        }
+
+        .reviews-section {
+            padding: 60px 0;
+            background: var(--light);
+        }
+
+        .reviews-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .reviews-container {
+            display: flex;
+            overflow: hidden;
+        }
+
+        .review-card {
+            min-width: 100%;
+            padding: 40px;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .review-card__avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--white);
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .review-card__name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .review-card__stars {
+            color: #ffc107;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .review-card__text {
+            color: var(--gray);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        .slider-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 45px;
+            height: 45px;
+            background: var(--white);
+            border: none;
+            border-radius: 50%;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+
+        .slider-arrows:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .slider-arrows--prev { left: -20px; }
+        .slider-arrows--next { right: -20px; }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .slider-dot.active {
+            background: var(--secondary);
+            width: 25px;
+            border-radius: 10px;
+        }
+
+        .cta-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .cta-section p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        .cta-section .btn-white {
+            background: var(--white);
+            color: var(--secondary);
+            padding: 16px 40px;
+            font-size: 18px;
+        }
+
+        .cta-section .btn-white:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 992px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slider-arrows {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="container top-bar__container">
+            <div class="top-bar__left">
+                <span><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</span>
+            </div>
+            <div class="top-bar__right">
+                <a href="mailto:Srska1995@mail.ru"><i class="fas fa-envelope"></i> Srska1995@mail.ru</a>
+                <a href="tel:+79522339145" class="top-bar__phone"><i class="fas fa-phone-alt"></i> 8-952-233-91-45</a>
+                <button class="btn btn-small btn-callback">Заказать звонок</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шапка с мега-меню -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-mountain"></i>
+                <div class="logo__text">
+                    <span class="logo__title">ПромАльп44/37</span>
+                    <span class="logo__subtitle">Промышленный альпинизм</span>
+                </div>
+            </a>
+
+            <nav class="nav">
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <li class="nav-item dropdown">
+                    <a href="services.html" class="nav-link dropdown-toggle">Услуги <i class="fas fa-chevron-down"></i></a>
+                    <div class="mega-menu mega-menu--services">
+                        <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
+                            <div class="mega-menu__column">
+                                <h4><i class="fas fa-building"></i> Фасадные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=facade">Утепление фасада</a></li>
+                                    <li><a href="services.html?tab=facade">Герметизация швов</a></li>
+                                    <li><a href="services.html?tab=facade">Покраска фасада</a></li>
+                                    <li><a href="services.html?tab=facade">Мойка окон</a></li>
+                                    <li><a href="services.html?tab=facade">Мойка фасада</a></li>
+                                </ul>
+                                <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=roof">Чистка снега</a></li>
+                                    <li><a href="services.html?tab=roof">Удаление наледи</a></li>
+                                    <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
+                                    <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
+                                    <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu__column">
+                                <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
+                                    <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
+                                </ul>
+                                <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=other">Демонтажные работы</a></li>
+                                    <li><a href="services.html?tab=other">Спил деревьев</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Наши работы</a></li>
+
+                    <!-- Выпадающее меню Информация -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Информация <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--info">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 500px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-toolbox"></i> Полезное</h4>
+                                    <ul>
+                                        <li><a href="useful.html">Снаряжение альпиниста</a></li>
+                                        <li><a href="useful.html#calculator">Калькулятор стоимости</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-book-open"></i> Статьи</h4>
+                                    <ul>
+                                        <li><a href="articles.html">Все статьи</a></li>
+                                        <li><a href="articles.html?page=1">Технологии работ</a></li>
+                                        <li><a href="articles.html?page=2">Безопасность</a></li>
+                                        <li><a href="articles.html?page=3">Советы экспертов</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Заголовок страницы -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Наши работы</h1>
+            <p>Примеры выполненных проектов в Костроме и ближайших областях</p>
+        </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section class="portfolio-content">
+        <div class="container">
+            <!-- Фильтр -->
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all"><i class="fas fa-th-large"></i> Все работы</button>
+                <button class="filter-btn" data-filter="facade"><i class="fas fa-building"></i> Фасадные</button>
+                <button class="filter-btn" data-filter="roof"><i class="fas fa-home"></i> Кровельные</button>
+                <button class="filter-btn" data-filter="mount"><i class="fas fa-tools"></i> Монтажные</button>
+                <button class="filter-btn" data-filter="other"><i class="fas fa-tree"></i> Прочие</button>
+            </div>
+
+            <!-- Сетка работ -->
+            <div class="portfolio-grid" id="portfolio-grid">
+                <!-- Заполняется через JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="section-title">Отзывы клиентов</h2>
+            <p class="section-subtitle">Что говорят о нас заказчики</p>
+
+            <div class="reviews-slider" id="reviews-slider">
+                <div class="reviews-container" id="reviews-container"></div>
+                <button class="slider-arrows slider-arrows--prev"><i class="fas fa-chevron-left"></i></button>
+                <button class="slider-arrows slider-arrows--next"><i class="fas fa-chevron-right"></i></button>
+                <div class="slider-dots" id="slider-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Призыв к действию -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Готовы обсудить ваш проект?</h2>
+            <p>Оставьте заявку, и мы предложим лучшее решение для вашей задачи</p>
+            <a href="contacts.html" class="btn btn-white">Связаться с нами</a>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__col">
+                    <div class="footer__logo">
+                        <i class="fas fa-mountain"></i>
+                        <span>ПромАльп44/37</span>
+                    </div>
+                    <p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p>
+                    <div class="footer__social">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4>Услуги</h4>
+                    <ul>
+                        <li><a href="services.html?tab=facade">Фасадные работы</a></li>
+                        <li><a href="services.html?tab=roof">Кровельные работы</a></li>
+                        <li><a href="services.html?tab=mount">Монтажные работы</a></li>
+                        <li><a href="services.html?tab=other">Прочие услуги</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="services.html">Услуги</a></li>
+                        <li><a href="portfolio.html">Наши работы</a></li>
+                        <li><a href="contacts.html">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Контакты</h4>
+                    <ul class="footer__contacts">
+                        <li><i class="fas fa-phone-alt"></i> <a href="tel:+79522339145">8-952-233-91-45</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2026 ПромАльп44/37. Все права защищены.</p>
+                <p>Промышленный альпинизм в Костроме и ближайших областях</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка ВК -->
+    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank">
+        <i class="fab fa-vk"></i>
+        <span>Написать ВКонтакте</span>
+    </a>
+
+    <script src="script.js"></script>
+</body>
+</html>

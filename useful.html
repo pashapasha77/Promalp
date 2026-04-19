@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Полезное — ПромАльп44/37</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🏔️%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .useful-content {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--secondary);
+            font-size: 32px;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        /* Карточки снаряжения */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .article-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .article-card__image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .article-card:hover .article-card__image img {
+            transform: scale(1.05);
+        }
+
+        .article-card__category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .article-card__content {
+            padding: 25px 20px;
+        }
+
+        .article-card__title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .article-card__excerpt {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .article-card__link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .article-card__link i {
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .article-card__link:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-body h3 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+
+        .modal-body h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .modal-body p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            margin: 15px 0 20px 20px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .modal-body .highlight-box {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        /* Калькулятор */
+        .calculator-section {
+            margin-top: 60px;
+            padding: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--border-radius);
+            color: var(--white);
+        }
+
+        .calculator-section h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .calculator-section h2 i {
+            color: var(--secondary);
+        }
+
+        .calculator-section p {
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .calculator-form {
+            max-width: 600px;
+        }
+
+        .calculator-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .calculator-form label {
+            color: var(--white);
+            opacity: 0.9;
+        }
+
+        .calculator__result {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .result-row--total {
+            border-bottom: none;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .min-order {
+            background: rgba(245, 130, 32, 0.2);
+            padding: 8px 15px;
+            border-radius: 30px;
+            display: inline-block;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 992px) {
+            .articles-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 32px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="container top-bar__container">
+            <div class="top-bar__left">
+                <span><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</span>
+            </div>
+            <div class="top-bar__right">
+                <a href="mailto:Srska1995@mail.ru"><i class="fas fa-envelope"></i> Srska1995@mail.ru</a>
+                <a href="tel:+79522339145" class="top-bar__phone"><i class="fas fa-phone-alt"></i> 8-952-233-91-45</a>
+                <button class="btn btn-small btn-callback">Заказать звонок</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шапка с мега-меню -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-mountain"></i>
+                <div class="logo__text">
+                    <span class="logo__title">ПромАльп44/37</span>
+                    <span class="logo__subtitle">Промышленный альпинизм</span>
+                </div>
+            </a>
+
+            <nav class="nav">
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <li class="nav-item dropdown">
+                    <a href="services.html" class="nav-link dropdown-toggle">Услуги <i class="fas fa-chevron-down"></i></a>
+                    <div class="mega-menu mega-menu--services">
+                        <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
+                            <div class="mega-menu__column">
+                                <h4><i class="fas fa-building"></i> Фасадные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=facade">Утепление фасада</a></li>
+                                    <li><a href="services.html?tab=facade">Герметизация швов</a></li>
+                                    <li><a href="services.html?tab=facade">Покраска фасада</a></li>
+                                    <li><a href="services.html?tab=facade">Мойка окон</a></li>
+                                    <li><a href="services.html?tab=facade">Мойка фасада</a></li>
+                                </ul>
+                                <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=roof">Чистка снега</a></li>
+                                    <li><a href="services.html?tab=roof">Удаление наледи</a></li>
+                                    <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
+                                    <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
+                                    <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu__column">
+                                <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
+                                    <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
+                                </ul>
+                                <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
+                                <ul>
+                                    <li><a href="services.html?tab=other">Демонтажные работы</a></li>
+                                    <li><a href="services.html?tab=other">Спил деревьев</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Наши работы</a></li>
+
+                    <!-- Выпадающее меню Информация -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Информация <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--info">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 500px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-toolbox"></i> Полезное</h4>
+                                    <ul>
+                                        <li><a href="useful.html">Снаряжение альпиниста</a></li>
+                                        <li><a href="useful.html#calculator">Калькулятор стоимости</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-book-open"></i> Статьи</h4>
+                                    <ul>
+                                        <li><a href="articles.html">Все статьи</a></li>
+                                        <li><a href="articles.html?page=1">Технологии работ</a></li>
+                                        <li><a href="articles.html?page=2">Безопасность</a></li>
+                                        <li><a href="articles.html?page=3">Советы экспертов</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Заголовок страницы -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Полезное</h1>
+            <p>Подробная информация о снаряжении промышленного альпиниста и калькулятор стоимости услуг.</p>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <section class="useful-content">
+        <div class="container">
+
+            <!-- Снаряжение -->
+            <h2 class="section-title">
+                <i class="fas fa-toolbox"></i>
+                Снаряжение альпиниста
+            </h2>
+            <p class="section-subtitle">Подробное описание всего необходимого оборудования для работы на высоте</p>
+
+            <div class="articles-grid">
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://img-edg.joomcdn.net/98a068cea64383730a6384cfe8b56cf0a8360f6d_original.jpeg" alt="Верёвки">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Верёвки: виды, характеристики, уход</h3>
+                        <p class="article-card__excerpt">Динамические, статические, полустатические верёвки. Как выбрать и как ухаживать.</p>
+                        <span class="article-card__link" onclick="openModal('ropes')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://avatars.mds.yandex.net/get-mpic/5221935/2a0000019b109cd6623c21f301a391d24573/orig" alt="Карабины">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Карабины: типы, муфты, материалы</h3>
+                        <p class="article-card__excerpt">Грушевидные, D-образные, овальные. Автоматические и ручные муфты.</p>
+                        <span class="article-card__link" onclick="openModal('carabiners')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://avatars.mds.yandex.net/i?id=a253f56be76671c14c47e323a14723c38c252a9f-10636867-images-thumbs&n=13" alt="Зажимы">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Зажимы: ручные, грудные, ножные</h3>
+                        <p class="article-card__excerpt">Виды зажимов для подъёма по верёвке. Жумар, кролль, пантин.</p>
+                        <span class="article-card__link" onclick="openModal('ascenders')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://bigwall.ru/upload/iblock/3f2/ottvrpk1lph5ls38dt5cuwoy0pj17yhc/MAESTROL_3650_005.jpg" alt="Спусковые устройства">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Спусковые устройства</h3>
+                        <p class="article-card__excerpt">Восьмёрка, решётка, ID, GRIGRI. Принципы работы и отличия.</p>
+                        <span class="article-card__link" onclick="openModal('descenders')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://protekt.by/image/catalog/data/Protekt/Blog/zachem-ispolzovat-polnuyu-strahovochnuyu-privyaz-a-ne-tolko-montazhnyiy-poyas.jpg" alt="Страховочные системы">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Страховочные системы (обвязки)</h3>
+                        <p class="article-card__excerpt">Нижняя, верхняя, полная обвязка. Как правильно подобрать и надеть.</p>
+                        <span class="article-card__link" onclick="openModal('harnesses')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-card__image">
+                        <img src="https://manaraga.ru/upload/iblock/f15/wpsmk1wucrdnmy0l4y0d8vbw7q8af72r.jpg" alt="Каски и СИЗ">
+                        <span class="article-card__category">Снаряжение</span>
+                    </div>
+                    <div class="article-card__content">
+                        <h3 class="article-card__title">Каски и СИЗ</h3>
+                        <p class="article-card__excerpt">Виды касок, перчатки, очки, наколенники. Требования безопасности.</p>
+                        <span class="article-card__link" onclick="openModal('helmets')">Подробнее <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Калькулятор стоимости услуг -->
+            <div class="calculator-section" id="calculator">
+                <h2><i class="fas fa-calculator"></i> Калькулятор стоимости услуг</h2>
+                <p>Рассчитайте примерную стоимость работ онлайн</p>
+                <p class="min-order"><strong>Минимальный заказ — 10 000 ₽</strong></p>
+
+                <div class="calculator-form">
+                    <div class="form-group">
+                        <label>Выберите услугу</label>
+                        <select id="service-select-useful" class="form-control"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Объём работ (м², м.п. или шт.)</label>
+                        <input type="number" id="area-input-useful" class="form-control" value="100" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Высота работ</label>
+                        <select id="height-select-useful" class="form-control">
+                            <option value="1">До 10 метров</option>
+                            <option value="1.3" selected>10-20 метров (+30%)</option>
+                            <option value="1.6">Выше 20 метров (+60%)</option>
+                        </select>
+                    </div>
+                    <div class="calculator__result">
+                        <div class="result-row"><span>Стоимость работ:</span><span id="work-price-useful">0</span> ₽</div>
+                        <div class="result-row result-row--total"><span>Итого:</span><span id="total-price-useful">0</span> ₽</div>
+                    </div>
+                    <a href="contacts.html" class="btn btn-primary">Заказать точный расчёт</a>
+                    <p class="form-note" style="color: rgba(255,255,255,0.7); margin-top: 15px;">* Окончательная стоимость после осмотра объекта</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Модальное окно -->
+    <div class="modal" id="article-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Заголовок</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Содержимое заполняется через JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__col">
+                    <div class="footer__logo">
+                        <i class="fas fa-mountain"></i>
+                        <span>ПромАльп44/37</span>
+                    </div>
+                    <p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p>
+                    <div class="footer__social">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4>Услуги</h4>
+                    <ul>
+                        <li><a href="services.html?tab=facade">Фасадные работы</a></li>
+                        <li><a href="services.html?tab=roof">Кровельные работы</a></li>
+                        <li><a href="services.html?tab=mount">Монтажные работы</a></li>
+                        <li><a href="services.html?tab=other">Прочие услуги</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="services.html">Услуги</a></li>
+                        <li><a href="portfolio.html">Наши работы</a></li>
+                        <li><a href="useful.html">Полезное</a></li>
+                        <li><a href="articles.html">Статьи</a></li>
+                        <li><a href="contacts.html">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Контакты</h4>
+                    <ul class="footer__contacts">
+                        <li><i class="fas fa-phone-alt"></i> <a href="tel:+79522339145">8-952-233-91-45</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2026 ПромАльп44/37. Все права защищены.</p>
+                <p>Промышленный альпинизм в Костроме и ближайших областях</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка ВК -->
+    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank">
+        <i class="fab fa-vk"></i>
+        <span>Написать ВКонтакте</span>
+    </a>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Контент для модальных окон (снаряжение)
+        const modalContent = {
+            ropes: {
+                title: 'Верёвки: виды, характеристики, уход',
+                content: `
+                    <h3>Виды альпинистских верёвок</h3>
+                    <p>В промышленном альпинизме используются три основных типа верёвок:</p>
+                    <ul>
+                        <li><strong>Динамические верёвки</strong> — растягиваются под нагрузкой, гасят энергию рывка при срыве. Используются для страховки.</li>
+                        <li><strong>Статические верёвки</strong> — минимальное растяжение (до 5%). Применяются для подъёма грузов, навески перил, спусков.</li>
+                        <li><strong>Полустатические (low stretch)</strong> — растяжение 5-10%. Универсальный вариант для большинства высотных работ.</li>
+                    </ul>
+
+                    <h3>Диаметр верёвки</h3>
+                    <ul>
+                        <li><strong>8-9 мм</strong> — сдвоенные верёвки, лёгкие, для опытных альпинистов.</li>
+                        <li><strong>10-11 мм</strong> — универсальный диаметр для большинства работ.</li>
+                        <li><strong>11.5-13 мм</strong> — для промышленного альпинизма, повышенная износостойкость.</li>
+                    </ul>
+
+                    <h3>Пропитка и защита</h3>
+                    <p>Верёвки с пропиткой (Dry) отталкивают воду и грязь, дольше служат. Обязательны для работы в сырую погоду.</p>
+
+                    <h3>Уход за верёвкой</h3>
+                    <ul>
+                        <li>Хранить в сухом проветриваемом месте, в чехле.</li>
+                        <li>Стирать только вручную или в специальной машинке для верёвок.</li>
+                        <li>Избегать контакта с химикатами, маслами, острыми краями.</li>
+                        <li>Срок службы — 3-5 лет при активном использовании, до 10 лет при редком.</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <strong>Важно!</strong> Верёвку необходимо выбраковывать при наличии повреждений оплётки, после сильных рывков, при контакте с агрессивными веществами.
+                    </div>
+                `
+            },
+            carabiners: {
+                title: 'Карабины: типы, муфты, материалы',
+                content: `
+                    <h3>Типы карабинов по форме</h3>
+                    <ul>
+                        <li><strong>D-образные</strong> — наиболее прочные, нагрузка распределяется вдоль основной оси.</li>
+                        <li><strong>Грушевидные (HMS)</strong> — широкое отверстие для узлов, удобны для организации страховки.</li>
+                        <li><strong>Овальные</strong> — симметричные, хорошо работают с блоками и роликами.</li>
+                        <li><strong>Треугольные</strong> — специальные, для фиксации в анкерных точках.</li>
+                    </ul>
+
+                    <h3>Типы муфт (замков)</h3>
+                    <ul>
+                        <li><strong>Ручная (винтовая)</strong> — надёжная, требует закручивания вручную.</li>
+                        <li><strong>Автоматическая (Auto Lock)</strong> — защёлкивается сама, удобна при частых перестёжках.</li>
+                        <li><strong>Двухтактная</strong> — требует двух действий для открытия, самая безопасная.</li>
+                        <li><strong>Байонетная</strong> — поворотная муфта, быстрая и надёжная.</li>
+                    </ul>
+
+                    <h3>Материалы</h3>
+                    <ul>
+                        <li><strong>Сталь</strong> — тяжёлые, очень прочные, для промышленного использования.</li>
+                        <li><strong>Алюминий</strong> — лёгкие, для спорта и работ с малой нагрузкой.</li>
+                        <li><strong>Титан</strong> — лёгкие и прочные, но дорогие.</li>
+                    </ul>
+
+                    <h3>Маркировка</h3>
+                    <p>На каждом карабине должны быть указаны: производитель, максимальная нагрузка (kN), стандарты (CE, UIAA).</p>
+
+                    <div class="highlight-box">
+                        <strong>Нагрузка:</strong> 1 kN ≈ 100 кг. Рабочая нагрузка обычно 22-30 kN по основной оси.
+                    </div>
+                `
+            },
+            ascenders: {
+                title: 'Зажимы: ручные, грудные, ножные',
+                content: `
+                    <h3>Ручные зажимы (жумары)</h3>
+                    <p>Предназначены для подъёма по верёвке руками. Оснащены рукояткой и эксцентриком.</p>
+                    <ul>
+                        <li><strong>Petzl Ascension</strong> — классический жумар, эргономичная рукоятка.</li>
+                        <li><strong>Camp Turbohand</strong> — усиленная конструкция, для промышленного использования.</li>
+                        <li><strong>Правые и левые</strong> — важно подбирать под ведущую руку.</li>
+                    </ul>
+
+                    <h3>Грудные зажимы (кролли)</h3>
+                    <p>Крепятся на груди, фиксируют положение альпиниста при подъёме.</p>
+                    <ul>
+                        <li><strong>Petzl Croll</strong> — самый популярный, надёжный.</li>
+                        <li><strong>Camp Turbochest</strong> — усиленный, для больших нагрузок.</li>
+                    </ul>
+
+                    <h3>Ножные зажимы (пантины)</h3>
+                    <p>Крепятся на ногу, помогают при подъёме, работают в паре с жумаром и кроллем.</p>
+
+                    <h3>Универсальные зажимы</h3>
+                    <ul>
+                        <li><strong>Petzl Microcender</strong> — маленький, для натяжения перил.</li>
+                        <li><strong>Petzl Shunt</strong> — для страховки при спуске, срабатывает при рывке.</li>
+                        <li><strong>Gibbs</strong> — американский тип, очень надёжный, для промышленных работ.</li>
+                    </ul>
+
+                    <div class="highlight-box">
+                        <strong>Важно!</strong> Зажимы работают только на верёвках определённого диаметра. Всегда проверяйте совместимость.
+                    </div>
+                `
+            },
+            descenders: {
+                title: 'Спусковые устройства',
+                content: `
+                    <h3>Основные типы спусковых устройств</h3>
+
+                    <h4>Восьмёрка</h4>
+                    <p>Самое простое и надёжное устройство. Используется для спуска и страховки. Недостаток — крутит верёвку.</p>
+
+                    <h4>Решётка (стойка, десантер)</h4>
+                    <p>Профессиональное устройство для длинных спусков. Позволяет регулировать трение, не крутит верёвку.</p>
+
+                    <h4>Самоблокирующиеся устройства</h4>
+                    <ul>
+                        <li><strong>Petzl ID</strong> — автоматически блокирует верёвку при отпускании ручки. Есть функция антипаника.</li>
+                        <li><strong>Petzl GRIGRI</strong> — для страховки и спуска, блокирует верёвку при рывке.</li>
+                        <li><strong>Petzl RIG</strong> — компактное самоблокирующееся устройство для профессионалов.</li>
+                        <li><strong>Camp Matik</strong> — аналог ID, автоматическая блокировка.</li>
+                        <li><strong>Kong Indy</strong> — итальянское устройство с плавной регулировкой.</li>
+                    </ul>
+
+                    <h3>Как выбрать</h3>
+                    <ul>
+                        <li>Для начинающих — восьмёрка или решётка.</li>
+                        <li>Для профессионалов — ID или RIG.</li>
+                        <li>Для спасательных работ — ID с функцией антипаника.</li>
+                    </ul>
+                `
+            },
+            harnesses: {
+                title: 'Страховочные системы (обвязки)',
+                content: `
+                    <h3>Типы обвязок</h3>
+
+                    <h4>Нижняя обвязка (беседка)</h4>
+                    <p>Состоит из пояса и ножных обхватов. Используется для большинства высотных работ.</p>
+
+                    <h4>Верхняя обвязка (грудная)</h4>
+                    <p>Надевается на грудь, не даёт перевернуться при срыве. Используется вместе с нижней для полной страховки.</p>
+
+                    <h4>Полная обвязка (комбинированная)</h4>
+                    <p>Единая конструкция из верхней и нижней частей. Для детей и спасательных работ.</p>
+
+                    <h4>Обвязка для позиционирования</h4>
+                    <p>Специальная обвязка с широким поясом и боковыми точками крепления. Для длительной работы на весу.</p>
+
+                    <h3>Как надеть обвязку</h3>
+                    <ol>
+                        <li>Расправьте все лямки.</li>
+                        <li>Наденьте ножные обхваты, застегните пряжки.</li>
+                        <li>Застегните поясную пряжку и обязательно задвойте её.</li>
+                        <li>Отрегулируйте все лямки так, чтобы обвязка сидела плотно, но не давила.</li>
+                    </ol>
+
+                    <div class="highlight-box">
+                        <strong>Правило:</strong> Обвязка должна быть застёгнута на все пряжки и обязательно задвоена!
+                    </div>
+                `
+            },
+            helmets: {
+                title: 'Каски и средства индивидуальной защиты',
+                content: `
+                    <h3>Альпинистские каски</h3>
+                    <ul>
+                        <li><strong>Petzl Vertex</strong> — самая популярная каска для промальпа.</li>
+                        <li><strong>Petzl Strato</strong> — облегчённая версия Vertex.</li>
+                        <li><strong>Camp Rock Star</strong> — удобная, с хорошей вентиляцией.</li>
+                    </ul>
+
+                    <h3>Требования к каске</h3>
+                    <ul>
+                        <li>Обязательно наличие подбородочного ремня (трёхточечного).</li>
+                        <li>Соответствие стандартам EN 12492 и EN 397.</li>
+                        <li>Срок службы — 5-10 лет с даты производства.</li>
+                    </ul>
+
+                    <h3>Перчатки</h3>
+                    <ul>
+                        <li>Кожаные с усилением на ладони — для работы с верёвками.</li>
+                        <li>Нитриловые — для химических веществ.</li>
+                        <li>Утеплённые — для зимних работ.</li>
+                    </ul>
+
+                    <h3>Очки защитные</h3>
+                    <p>Обязательны при работе с инструментом, химикатами, при сильном ветре.</p>
+
+                    <h3>Наколенники</h3>
+                    <p>Для длительной работы на коленях (кровля, фасады).</p>
+                `
+            }
+        };
+
+        // Функция открытия модального окна
+        function openModal(type) {
+            const data = modalContent[type];
+            if (data) {
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-body').innerHTML = data.content;
+                document.getElementById('article-modal').classList.add('active');
+            }
+        }
+
+        // Функция закрытия модального окна
+        function closeModal() {
+            document.getElementById('article-modal').classList.remove('active');
+        }
+
+        // Закрытие по клику вне окна
+        document.getElementById('article-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Закрытие по ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

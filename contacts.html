@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты — ПромАльп44/37</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🏔️%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Яндекс.Карты -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU" type="text/javascript"></script>
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .contacts-page {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .contact-card {
+            display: flex;
+            gap: 20px;
+            padding: 25px;
+            background: var(--light);
+            border-radius: var(--border-radius);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card__icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(245, 130, 32, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-card__icon i {
+            font-size: 28px;
+            color: var(--secondary);
+        }
+
+        .contact-card__content h3 {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .contact-card__content p {
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .contact-card__content a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .contact-card__content a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-form {
+            background: var(--light);
+            padding: 35px;
+            border-radius: var(--border-radius);
+        }
+
+        .contact-form h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .contact-form p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .map-section {
+            margin-top: 30px;
+        }
+
+        .map-section h2 {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .map-section p {
+            text-align: center;
+            color: var(--gray);
+            margin-bottom: 30px;
+        }
+
+        .map-container {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            height: 400px;
+        }
+
+        #yandex-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .regions-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .region-tag {
+            background: var(--light);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: var(--primary);
+            border: 1px solid #ddd;
+        }
+
+        .region-tag i {
+            color: var(--secondary);
+            margin-right: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .contacts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="container top-bar__container">
+            <div class="top-bar__left">
+                <span><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</span>
+            </div>
+            <div class="top-bar__right">
+                <a href="mailto:Srska1995@mail.ru"><i class="fas fa-envelope"></i> Srska1995@mail.ru</a>
+                <a href="tel:+79522339145" class="top-bar__phone"><i class="fas fa-phone-alt"></i> 8-952-233-91-45</a>
+                <button class="btn btn-small btn-callback">Заказать звонок</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Шапка с мега-меню -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-mountain"></i>
+                <div class="logo__text">
+                    <span class="logo__title">ПромАльп44/37</span>
+                    <span class="logo__subtitle">Промышленный альпинизм</span>
+                </div>
+            </a>
+
+            <nav class="nav">
+                <button class="mobile-toggle" id="mobile-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+
+                    <!-- Выпадающее меню Услуги -->
+                    <li class="nav-item dropdown">
+                        <a href="services.html" class="nav-link dropdown-toggle">Услуги <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--services">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-building"></i> Фасадные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=facade">Утепление фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Герметизация швов</a></li>
+                                        <li><a href="services.html?tab=facade">Покраска фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка окон</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка фасада</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=roof">Чистка снега</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление наледи</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
+                                        <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
+                                        <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
+                                        <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=other">Демонтажные работы</a></li>
+                                        <li><a href="services.html?tab=other">Спил деревьев</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Наши работы</a></li>
+
+                    <!-- Выпадающее меню Информация -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle">Информация <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--info">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 500px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-toolbox"></i> Полезное</h4>
+                                    <ul>
+                                        <li><a href="useful.html">Снаряжение альпиниста</a></li>
+                                        <li><a href="useful.html#calculator">Калькулятор стоимости</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-book-open"></i> Статьи</h4>
+                                    <ul>
+                                        <li><a href="articles.html">Все статьи</a></li>
+                                        <li><a href="articles.html?page=1">Технологии работ</a></li>
+                                        <li><a href="articles.html?page=2">Безопасность</a></li>
+                                        <li><a href="articles.html?page=3">Советы экспертов</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Заголовок страницы -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Контакты</h1>
+            <p>ПромАльп44/37 — Кострома и ближайшие области</p>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <section class="contacts-page">
+        <div class="container">
+            <div class="contacts-grid">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-card__icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-card__content">
+                            <h3>Телефон</h3>
+                            <a href="tel:+79522339145">8-952-233-91-45</a>
+                            <p>Звоните, работаем ежедневно</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-card__content">
+                            <h3>Email</h3>
+                            <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a>
+                            <p>Отвечаем в течение часа</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-card__content">
+                            <h3>Адрес</h3>
+                            <p>г. Кострома и ближайшие области</p>
+                            <p>Выезд по Костромской, Ивановской, Ярославской областям</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-card__icon">
+                            <i class="fab fa-vk"></i>
+                        </div>
+                        <div class="contact-card__content">
+                            <h3>ВКонтакте</h3>
+                            <a href="https://vk.com/write-12345678" target="_blank">Написать сообщение</a>
+                            <p>Отвечаем в течение 15 минут</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h2>Оставить заявку</h2>
+                    <p>Опишите задачу, и мы свяжемся с вами для точного расчёта</p>
+
+                    <form id="contact-form-page">
+                        <div class="form-group">
+                            <label>Ваше имя *</label>
+                            <input type="text" name="name" class="form-control" placeholder="Иван Иванов" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Телефон *</label>
+                            <input type="tel" name="phone" class="form-control" placeholder="+7 (XXX) XXX-XX-XX" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="example@mail.ru">
+                        </div>
+                        <div class="form-group">
+                            <label>Выберите услугу</label>
+                            <select name="service" class="form-control" id="service-select-form"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>Сообщение</label>
+                            <textarea name="message" class="form-control" placeholder="Опишите задачу, укажите адрес и объём работ..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Отправить заявку</button>
+                        <p class="form-note">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Карта -->
+            <div class="map-section">
+                <h2>География работ</h2>
+                <p>Работаем в Костроме и по всей Костромской области</p>
+                <div class="map-container">
+                    <div id="yandex-map"></div>
+                </div>
+                <div class="regions-list">
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Кострома</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Кострома (район)</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Волгореченск</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Буй</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Шарья</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Мантурово</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Нерехта</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Галич</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Ивановская область</span>
+                    <span class="region-tag"><i class="fas fa-check-circle"></i> Ярославская область</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__col">
+                    <div class="footer__logo">
+                        <i class="fas fa-mountain"></i>
+                        <span>ПромАльп44/37</span>
+                    </div>
+                    <p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p>
+                    <div class="footer__social">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer__col">
+                    <h4>Услуги</h4>
+                    <ul>
+                        <li><a href="services.html?tab=facade">Фасадные работы</a></li>
+                        <li><a href="services.html?tab=roof">Кровельные работы</a></li>
+                        <li><a href="services.html?tab=mount">Монтажные работы</a></li>
+                        <li><a href="services.html?tab=other">Прочие услуги</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Навигация</h4>
+                    <ul>
+                        <li><a href="index.html">Главная</a></li>
+                        <li><a href="services.html">Услуги</a></li>
+                        <li><a href="portfolio.html">Наши работы</a></li>
+                        <li><a href="contacts.html">Контакты</a></li>
+                    </ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Контакты</h4>
+                    <ul class="footer__contacts">
+                        <li><i class="fas fa-phone-alt"></i> <a href="tel:+79522339145">8-952-233-91-45</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>© 2026 ПромАльп44/37. Все права защищены.</p>
+                <p>Промышленный альпинизм в Костроме и ближайших областях</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Кнопка ВК -->
+    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank">
+        <i class="fab fa-vk"></i>
+        <span>Написать ВКонтакте</span>
+    </a>
+
+    <script src="script.js"></script>
+
+    <!-- Инициализация Яндекс.Карты -->
+    <script>
+        ymaps.ready(function () {
+            var myMap = new ymaps.Map('yandex-map', {
+                center: [57.7679, 40.9269],
+                zoom: 9,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
+
+            var myPlacemark = new ymaps.Placemark([57.7679, 40.9269], {
+                hintContent: 'ПромАльп44/37',
+                balloonContent: 'Промышленный альпинизм в Костроме и ближайших областях<br>8-952-233-91-45'
+            }, {
+                iconLayout: 'default#image',
+                iconImageHref: 'https://cdn.jsdelivr.net/npm/emoji-datasource-apple@14.0.0/img/apple/64/1f3d4.png',
+                iconImageSize: [40, 40],
+                iconImageOffset: [-20, -40]
+            });
+
+            myMap.geoObjects.add(myPlacemark);
+        });
+    </script>
+</body>
+</html>

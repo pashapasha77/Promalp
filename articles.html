@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статьи — ПромАльп44/37</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🏔️%3C/text%3E%3C/svg%3E">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .articles-content {
+            padding: 60px 0;
+            background: var(--white);
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title i {
+            color: var(--secondary);
+            font-size: 32px;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .article-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .article-card__image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .article-card__image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .article-card:hover .article-card__image img {
+            transform: scale(1.05);
+        }
+
+        .article-card__category {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .article-card__content {
+            padding: 25px 20px;
+        }
+
+        .article-card__title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .article-card__excerpt {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .article-card__link {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .article-card__link i {
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+        .article-card__link:hover i {
+            transform: translateX(5px);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            max-width: 800px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 25px 30px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--white);
+            z-index: 10;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light);
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            transition: all 0.3s;
+        }
+
+        .modal-close:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-body h3 {
+            color: var(--primary);
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+
+        .modal-body h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .modal-body p {
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .modal-body ul, .modal-body ol {
+            margin: 15px 0 20px 20px;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .modal-body li {
+            margin-bottom: 8px;
+        }
+
+        .modal-body .highlight-box {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 20px 0;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 50px;
+        }
+
+        .pagination-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: var(--light);
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .pagination-btn:hover {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        .pagination-btn.active {
+            background: var(--secondary);
+            color: var(--white);
+        }
+
+        @media (max-width: 992px) {
+            .articles-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 { font-size: 32px; }
+            .articles-grid { grid-template-columns: 1fr; }
+            .modal-content { max-width: 95%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container top-bar__container">
+            <div class="top-bar__left">
+                <span><i class="fas fa-map-marker-alt"></i> Кострома и ближайшие области</span>
+            </div>
+            <div class="top-bar__right">
+                <a href="mailto:Srska1995@mail.ru"><i class="fas fa-envelope"></i> Srska1995@mail.ru</a>
+                <a href="tel:+79522339145" class="top-bar__phone"><i class="fas fa-phone-alt"></i> 8-952-233-91-45</a>
+                <button class="btn btn-small btn-callback">Заказать звонок</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container header__container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-mountain"></i>
+                <div class="logo__text">
+                    <span class="logo__title">ПромАльп44/37</span>
+                    <span class="logo__subtitle">Промышленный альпинизм</span>
+                </div>
+            </a>
+
+            <nav class="nav">
+                <button class="mobile-toggle" id="mobile-toggle"><i class="fas fa-bars"></i></button>
+                <ul class="nav-menu" id="nav-menu">
+                    <li class="nav-item"><a href="index.html" class="nav-link">Главная</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a href="services.html" class="nav-link dropdown-toggle">Услуги <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--services">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 550px; gap: 20px;">
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-building"></i> Фасадные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=facade">Утепление фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Герметизация швов</a></li>
+                                        <li><a href="services.html?tab=facade">Покраска фасада</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка окон</a></li>
+                                        <li><a href="services.html?tab=facade">Мойка фасада</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-home"></i> Кровельные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=roof">Чистка снега</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление наледи</a></li>
+                                        <li><a href="services.html?tab=roof">Удаление сосулек</a></li>
+                                        <li><a href="services.html?tab=roof">Монтаж водостоков</a></li>
+                                        <li><a href="services.html?tab=roof">Снегозадержатели</a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu__column">
+                                    <h4><i class="fas fa-tools"></i> Монтажные работы</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=mount">Монтаж кондиционеров</a></li>
+                                        <li><a href="services.html?tab=mount">Монтаж рекламы</a></li>
+                                    </ul>
+                                    <h4 style="margin-top: 20px;"><i class="fas fa-tree"></i> Прочие услуги</h4>
+                                    <ul>
+                                        <li><a href="services.html?tab=other">Демонтажные работы</a></li>
+                                        <li><a href="services.html?tab=other">Спил деревьев</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="portfolio.html" class="nav-link">Наши работы</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link active dropdown-toggle">Информация <i class="fas fa-chevron-down"></i></a>
+                        <div class="mega-menu mega-menu--info">
+                            <div class="container mega-menu__container" style="grid-template-columns: repeat(2, 1fr); max-width: 500px;">
+                                <div class="mega-menu__column"><h4><i class="fas fa-toolbox"></i> Полезное</h4><ul><li><a href="useful.html">Снаряжение</a></li><li><a href="useful.html#calculator">Калькулятор</a></li></ul></div>
+                                <div class="mega-menu__column"><h4><i class="fas fa-book-open"></i> Статьи</h4><ul><li><a href="articles.html">Все статьи</a></li><li><a href="articles.html?page=1">Технологии</a></li><li><a href="articles.html?page=2">Безопасность</a></li><li><a href="articles.html?page=3">Советы</a></li></ul></div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="nav-item"><a href="contacts.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Статьи</h1>
+            <p>Полезные материалы о технологиях высотных работ, безопасности и советы от профессионалов.</p>
+        </div>
+    </section>
+
+    <section class="articles-content">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-book-open"></i>Полезные статьи</h2>
+            <p class="section-subtitle">Выберите интересующую вас тему</p>
+
+            <div class="articles-grid" id="articles-container"></div>
+
+            <div class="pagination" id="pagination">
+                <button class="pagination-btn active" data-page="1">1</button>
+                <button class="pagination-btn" data-page="2">2</button>
+                <button class="pagination-btn" data-page="3">3</button>
+                <button class="pagination-btn" data-page="4">4</button>
+                <button class="pagination-btn" data-page="5">5</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="article-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__top">
+                <div class="footer__col">
+                    <div class="footer__logo"><i class="fas fa-mountain"></i><span>ПромАльп44/37</span></div>
+                    <p>Промышленный альпинизм в Костроме и ближайших областях. Работаем на высоте с гарантией качества.</p>
+                    <div class="footer__social"><a href="#"><i class="fab fa-vk"></i></a><a href="#"><i class="fab fa-telegram"></i></a><a href="#"><i class="fab fa-whatsapp"></i></a></div>
+                </div>
+                <div class="footer__col"><h4>Услуги</h4><ul><li><a href="services.html?tab=facade">Фасадные работы</a></li><li><a href="services.html?tab=roof">Кровельные работы</a></li><li><a href="services.html?tab=mount">Монтажные работы</a></li><li><a href="services.html?tab=other">Прочие услуги</a></li></ul></div>
+                <div class="footer__col"><h4>Навигация</h4><ul><li><a href="index.html">Главная</a></li><li><a href="services.html">Услуги</a></li><li><a href="portfolio.html">Наши работы</a></li><li><a href="useful.html">Полезное</a></li><li><a href="articles.html">Статьи</a></li><li><a href="contacts.html">Контакты</a></li></ul></div>
+                <div class="footer__col"><h4>Контакты</h4><ul class="footer__contacts"><li><i class="fas fa-phone-alt"></i><a href="tel:+79522339145">8-952-233-91-45</a></li><li><i class="fas fa-envelope"></i><a href="mailto:Srska1995@mail.ru">Srska1995@mail.ru</a></li><li><i class="fas fa-map-marker-alt"></i>Кострома и ближайшие области</li></ul></div>
+            </div>
+            <div class="footer__bottom"><p>© 2026 ПромАльп44/37. Все права защищены.</p><p>Промышленный альпинизм в Костроме и ближайших областях</p></div>
+        </div>
+    </footer>
+
+    <a href="https://vk.com/write-12345678" class="vk-button" target="_blank"><i class="fab fa-vk"></i><span>Написать ВКонтакте</span></a>
+
+    <script src="script.js"></script>
+
+    <script>
+        const articlesData = {
+            1: [
+                {title:'Подготовка фасада к покраске',excerpt:'Полный цикл подготовки поверхности перед окрашиванием.',category:'Технологии',image:'https://formula-v.ru/images/Okraska-fasadov3.jpg',content:`<h3>Этапы подготовки фасада</h3><h4>1. Очистка поверхности</h4><p>Удаление старой краски, грязи, высолов. Используются мойки высокого давления, пескоструйные аппараты или химические смывки. Это самый важный этап, от которого зависит долговечность нового покрытия.</p><h4>2. Ремонт трещин и сколов</h4><p>Все дефекты заделываются ремонтными составами. Глубокие трещины расшиваются и заполняются герметиком. Если пропустить этот шаг, краска быстро потрескается в этих местах.</p><h4>3. Грунтовка</h4><p>Обязательный этап! Грунтовка улучшает адгезию (сцепление) краски, уменьшает её расход, защищает от грибка и плесени. Для фасадов лучше использовать грунтовку глубокого проникновения.</p><h4>4. Шпаклёвка (при необходимости)</h4><p>Для выравнивания поверхности перед покраской, если есть значительные неровности.</p><h4>5. Финишная окраска</h4><p>Нанесение краски в 2-3 слоя с промежуточной сушкой. Первый слой — самый важный, он должен быть тонким и равномерным.</p><div class="highlight-box"><strong>Совет:</strong> Не красьте фасад в дождь, при сильном ветре или на солнцепёке. Оптимальная температура +10°C до +25°C.</div>`},
+                {title:'Герметизация межпанельных швов',excerpt:'Технология герметизации швов по ГОСТ.',category:'Технологии',image:'https://prom-alp24.ru/wp-content/uploads/2020/06/первичка-2-1024x512.jpg',content:`<h3>Почему важна герметизация?</h3><p>Через негерметичные швы уходит до 40% тепла, проникает влага, образуется плесень, разрушается фасад. В панельных домах это одна из главных причин промерзания стен.</p><h3>Технология «тёплый шов» (по ГОСТ)</h3><ol><li><strong>Вскрытие шва</strong> — удаление старого герметика, очистка полости от мусора и пыли.</li><li><strong>Укладка утеплителя</strong> — в шов укладывается вилатерм (вспененный полиэтилен) нужного диаметра. Он должен сидеть плотно, с небольшим сжатием.</li><li><strong>Герметизация</strong> — поверх вилатерма наносится мастика или полиуретановый герметик слоем не менее 3-5 мм.</li><li><strong>Выравнивание</strong> — герметик разравнивается шпателем заподлицо с фасадом для эстетичного вида.</li></ol><h3>Материалы</h3><ul><li><strong>Вилатерм</strong> — утеплитель, выпускается диаметром 10-60 мм.</li><li><strong>Герметик полиуретановый</strong> — самый долговечный (до 15 лет), эластичный.</li><li><strong>Герметик силиконовый</strong> — для швов с малой деформацией.</li><li><strong>Мастика битумная</strong> — для кровельных работ.</li></ul><div class="highlight-box"><strong>Гарантия:</strong> При правильном выполнении герметизация служит 10-15 лет.</div>`},
+                {title:'Утепление фасада: выбор материала',excerpt:'Минеральная вата или пенопласт? Сравнение утеплителей.',category:'Технологии',image:'https://50.img.avito.st/image/1/1.ntFO_7aDMjggV9Iyftm72kNeMD7wVOgxGlQwOvZCMjLaUAjy-Vw.rhb_4RkakMegrSfgkwH0rq7jIeD-p_q-DllT1XUFEEM',content:`<h3>Минеральная (каменная) вата</h3><p><strong>Плюсы:</strong> Не горит, паропроницаема (стены «дышат»), хорошая звукоизоляция, долговечность до 50 лет. Экологичный материал.</p><p><strong>Минусы:</strong> Дороже пенопласта, тяжелее, требует обязательной защиты от влаги (намокания).</p><p><strong>Цена:</strong> от 2500 ₽/м² с работой.</p><h3>Пенополистирол (пенопласт)</h3><p><strong>Плюсы:</strong> Дешёвый, лёгкий, не впитывает влагу, прост в монтаже.</p><p><strong>Минусы:</strong> Горюч, паронепроницаем (стены не дышат), любят грызуны, срок службы 15-20 лет.</p><p><strong>Цена:</strong> от 1800 ₽/м² с работой.</p><h3>Экструдированный пенополистирол (XPS)</h3><p><strong>Применение:</strong> Идеален для цоколя, фундамента, отмостки. Очень прочный и не боится воды.</p><div class="highlight-box"><strong>Рекомендация:</strong> Для жилых домов и квартир всегда выбирайте минеральную вату — она безопаснее и долговечнее. Пенопласт подходит только для нежилых помещений или временных построек.</div>`}
+            ],
+            2: [
+                {title:'Очистка кровли от снега: правила безопасности',excerpt:'Как правильно чистить крышу, чтобы не повредить покрытие.',category:'Безопасность',image:'https://pro-alpinizm.ru/wp-content/uploads/2025/01/uborka-snega-s-krysh-1.jpg',content:`<h3>Почему важно чистить крышу?</h3><p>Снеговая нагрузка может превысить несущую способность кровли, что приводит к обрушению. Наледь и сосульки опасны для людей, автомобилей и водостоков.</p><h3>Правила безопасной очистки</h3><ul><li>Работать только со страховкой, даже на пологой крыше.</li><li>Использовать пластиковые лопаты, чтобы не повредить покрытие (особенно металлочерепицу и мягкую кровлю).</li><li>Не сбрасывать снег на провода, кондиционеры, козырьки.</li><li>Ограждать опасную зону внизу сигнальной лентой на расстоянии 5-10 метров от стены.</li><li>Не работать в одиночку — обязательно напарник для страховки и подачи инструмента.</li></ul><h3>Особенности для разных покрытий</h3><ul><li><strong>Металлочерепица и профнастил</strong> — оставлять 5-10 см снега, чтобы не поцарапать полимерное покрытие.</li><li><strong>Мягкая кровля</strong> — только пластиковые лопаты, без усилий, чтобы не сорвать гранулят.</li><li><strong>Шифер</strong> — ходить только по трапам, так как это очень хрупкий материал!</li><li><strong>Фальцевая кровля</strong> — аккуратно, не деформировать фальцы.</li></ul><div class="highlight-box"><strong>Важно!</strong> Никогда не сбивайте сосульки молотком или ломом — это повреждает водостоки и фасад. Используйте специальные скребки или горячую воду (в крайнем случае).</div>`},
+                {title:'Монтаж кондиционера на высоте',excerpt:'Особенности установки внешнего блока на фасаде многоэтажки.',category:'Технологии',image:'https://avatars.mds.yandex.net/i?id=ea22365a8e24bc9c106483fe14aad7d3_l-5480282-images-thumbs&n=13',content:`<h3>Что нужно для монтажа</h3><ul><li>Промышленный альпинист с допуском к высотным работам.</li><li>Кронштейны, подходящие под вес блока и материал стены (кирпич, бетон, сэндвич-панели).</li><li>Инструмент: перфоратор, уровень, гаечные ключи, динамометрический ключ.</li><li>Страховка инструмента от падения (специальные темляки).</li><li>Система полиспаста или лебёдка для подъёма блока.</li></ul><h3>Этапы монтажа</h3><ol><li><strong>Разметка</strong> — определение места установки с учётом доступа воздуха и удобства обслуживания. Минимальное расстояние до потолка — 10-15 см.</li><li><strong>Крепление кронштейнов</strong> — сверление отверстий, установка химических или распорных анкеров.</li><li><strong>Подъём блока</strong> — с использованием верёвок и системы полиспаста. Блок должен быть надёжно закреплён на верёвке.</li><li><strong>Фиксация блока</strong> — затяжка гаек с рекомендованным усилием, проверка горизонтали уровнем.</li><li><strong>Подключение коммуникаций</strong> — прокладка трассы, подключение электрики, вакуумирование системы.</li></ol><h3>Особенности зимнего монтажа</h3><p>При температуре ниже -10°C требуются специальные зимние комплекты для кондиционера (подогрев картера компрессора, дренажа). Также сложнее работать с медными трубами.</p><div class="highlight-box"><strong>Совет:</strong> Не устанавливайте внешний блок под прямыми солнечными лучами (перегрев) или в местах скопления снега. Обеспечьте свободный доступ для сервисного обслуживания.</div>`},
+                {title:'Спил аварийных деревьев частями',excerpt:'Технология безопасного удаления деревьев в стеснённых условиях.',category:'Технологии',image:'https://avatars.mds.yandex.net/i?id=42317effc8daacaeb8977ae13526a4b0435c576f-5863201-images-thumbs&n=13',content:`<h3>Когда требуется спил дерева частями?</h3><p>Метод применяется, когда нет свободного пространства для валки дерева целиком: в плотной городской застройке, рядом со зданиями, линиями электропередач, заборами.</p><h3>Методы спила</h3><ul><li><strong>С использованием автовышки</strong> — самый безопасный и быстрый способ, если есть подъезд.</li><li><strong>Методом промышленного альпинизма</strong> — когда техника не может подъехать. Альпинист поднимается по стволу, закрепляется и спиливает дерево по частям сверху вниз.</li></ul><h3>Техника безопасности при работе альпинистом</h3><ul><li>Ограждение опасной зоны радиусом, равным высоте дерева плюс 5 метров.</li><li>Использование каски с защитой лица, очков, перчаток, спецобуви с защитой от пореза.</li><li>Надёжная страховка альпиниста к стволу и независимая страховочная верёвка.</li><li>Контролируемый спуск спиленных частей на верёвке (ни в коем случае не свободный сброс!).</li></ul><h3>Что входит в стоимость услуги</h3><ul><li>Выезд специалиста, оценка и составление плана работ.</li><li>Непосредственно спил дерева.</li><li>Уборка и вывоз порубочных остатков (веток и ствола).</li><li>Уборка территории от опилок и мелкого мусора.</li></ul><div class="highlight-box"><strong>Важно:</strong> Для спиливания деревьев в городе часто требуется разрешение (порубочный билет). Уточняйте этот момент у заказчика.</div>`}
+            ],
+            3: [
+                {title:'Мойка окон на высоте: технология',excerpt:'Как профессионально моют окна в небоскрёбах и на высоте.',category:'Технологии',image:'https://static.tildacdn.com/tild3232-3139-4165-b361-663163366566/___69.png',content:`<h3>Методы мойки окон на высоте</h3><ul><li><strong>Промышленный альпинизм</strong> — универсальный метод для любого здания, где нет технической возможности использовать люльки.</li><li><strong>Люльки и фасадные подъёмники</strong> — если здание оборудовано такими системами.</li><li><strong>Телескопические штанги с подачей воды</strong> — для окон до 3-4 этажа, где не требуется выход на фасад.</li></ul><h3>Процесс профессиональной мойки (альпинистами)</h3><ol><li><strong>Подготовка:</strong> Обильное смачивание стекла и рамы водой для размягчения грязи.</li><li><strong>Нанесение моющего раствора:</strong> Используется специальный концентрат для стёкол, который не оставляет разводов.</li><li><strong>Очистка:</strong> Губкой или мягкой щёткой с телескопической ручкой удаляется основная грязь.</li><li><strong>Удаление раствора:</strong> Резиновым сгоном (сквиджем) вода сгоняется сверху вниз или горизонтально.</li><li><strong>Финишная протирка:</strong> Насухо микрофиброй, полировка стёкол для удаления оставшихся разводов.</li></ol><h3>Что входит в стоимость</h3><ul><li>Выезд бригады на объект.</li><li>Профессиональные моющие средства и инвентарь.</li><li>Работа промышленных альпинистов.</li><li>Уборка подоконников и отливов от грязной воды после работ.</li></ul><div class="highlight-box"><strong>Периодичность:</strong> Рекомендуется мыть фасадные окна 2 раза в год — весной (после таяния снега) и осенью (перед зимой).</div>`},
+                {title:'Промышленный альпинизм зимой',excerpt:'Особенности высотных работ в холодное время года.',category:'Советы',image:'https://roof-1.ru/wp-content/uploads/2022/10/Очистка-от-снега-10-800x601.jpg',content:`<h3>Ограничения по погоде</h3><p>Работы на высоте прекращаются при следующих условиях:</p><ul><li>Температура воздуха ниже -25°C (при более низких температурах снаряжение теряет свои свойства, повышается риск обморожений).</li><li>Скорость ветра более 10 м/с (сильно раскачивает альпиниста, затрудняет контроль).</li><li>Сильный снегопад, метель, гололёд, гроза.</li></ul><h3>Особенности снаряжения зимой</h3><ul><li><strong>Одежда:</strong> Многослойная утеплённая спецодежда, не стесняющая движений. Обязательно термобельё, флисовая кофта, мембранная куртка.</li><li><strong>Перчатки:</strong> Тёплые, но сохраняющие чувствительность для работы с карабинами и узлами. Часто используются две пары: тонкие тактические и сверху тёплые верхонки.</li><li><strong>Обувь:</strong> Утеплённая, с нескользящей подошвой, совместимая с зажимами и педалями.</li><li><strong>Верёвки:</strong> Обязательно с водоотталкивающей пропиткой (маркировка Dry). Мокрая верёвка на морозе становится колом и теряет прочность.</li><li><strong>Термос с горячим чаем</strong> — обязательный элемент экипировки.</li></ul><h3>Зимние услуги, которые мы предлагаем</h3><ul><li>Очистка кровли от снега и наледи.</li><li>Удаление сосулек с карнизов и козырьков.</li><li>Монтаж и ремонт снегозадержателей.</li><li>Аварийный ремонт кровли в зимний период.</li></ul><div class="highlight-box"><strong>Совет:</strong> Планируйте зимние высотные работы заранее. В пик сезона (декабрь-февраль) у альпинистов очень высокая загрузка.</div>`},
+                {title:'Виды герметиков для фасадных работ',excerpt:'Какой герметик выбрать для разных типов швов и поверхностей.',category:'Технологии',image:'https://anika.by/oc-content/uploads/246/108927.jpg',content:`<h3>Полиуретановые герметики</h3><p>Самые популярные для фасадных работ. Обладают отличной адгезией к бетону, кирпичу, металлу. Эластичные (выдерживают растяжение до 200-300%), долговечные (до 15 лет), устойчивы к УФ-излучению и атмосферным воздействиям. Идеальны для герметизации межпанельных и деформационных швов.</p><h3>Силиконовые герметики</h3><p>Для швов с малой деформацией. Отличная адгезия к стеклу, керамике, эмалям. Бывают нейтральные и кислотные (кислотные нельзя использовать на металле и камне, вызывают коррозию). Хорошо подходят для герметизации оконных отливов и примыканий к остеклению.</p><h3>Акриловые герметики</h3><p>Недорогие, экологичные, можно красить. Но менее эластичные и долговечные, чем полиуретан. Со временем могут выцветать и трескаться. Подходят для внутренних работ или для заделки небольших трещин в штукатурке.</p><h3>Битумные и бутилкаучуковые герметики</h3><p>Специализированные материалы для кровельных работ, гидроизоляции фундаментов и цоколей. Обладают отличной адгезией к битумным поверхностям, рубероиду, металлу.</p><div class="highlight-box"><strong>Рекомендация:</strong> Для фасадных швов всегда выбирайте качественный полиуретановый герметик проверенных брендов (например, Soudal, Tytan, Sikaflex).</div>`}
+            ],
+            4: [
+                {title:'Монтаж водосточной системы',excerpt:'Виды водостоков, расчёт количества и правила установки.',category:'Технологии',image:'https://sk-r.ru/wp-content/uploads/2025/08/ocnjovjmrv.jpg',content:`<h3>Виды водосточных систем</h3><ul><li><strong>Пластиковые (ПВХ)</strong> — не ржавеют, лёгкие, недорогие, но менее прочные и могут треснуть на морозе, если в них замёрзнет вода. Срок службы 15-20 лет.</li><li><strong>Металлические (оцинкованная сталь, сталь с полимерным покрытием)</strong> — прочные, долговечные (30-50 лет), не боятся морозов. Дороже пластика, требуют аккуратного монтажа, чтобы не поцарапать покрытие.</li><li><strong>Медные</strong> — премиум-сегмент, срок службы 100+ лет, очень дорогие. Со временем покрываются благородной патиной.</li></ul><h3>Расчёт водостока</h3><ul><li>Площадь ската кровли определяет диаметр желобов и труб. Для площади до 100 м² — желоб 125 мм, труба 90 мм. Свыше 100 м² — желоб 150 мм, труба 100 мм.</li><li>На каждые 10 метров желоба устанавливается одна водосточная труба.</li><li>Уклон желоба должен составлять 3-5 мм на 1 метр длины для нормального стока воды.</li></ul><h3>Этапы монтажа</h3><ol><li><strong>Разметка и установка кронштейнов</strong> с учётом уклона.</li><li><strong>Укладка желобов</strong> в кронштейны, соединение между собой муфтами.</li><li><strong>Установка водоприёмных воронок</strong> в самых низких точках желоба.</li><li><strong>Монтаж водосточных труб</strong> и колен (отметов) для отвода воды от фундамента.</li><li><strong>Крепление труб к стене</strong> хомутами с шагом 1.5-2 метра.</li></ol><div class="highlight-box"><strong>Совет:</strong> Устанавливайте водостоки до наступления заморозков. Зимой монтаж возможен, но сложнее и менее надёжен (особенно для пластика).</div>`},
+                {title:'Установка снегозадержателей',excerpt:'Зачем нужны снегозадержатели и как их правильно монтировать.',category:'Технологии',image:'https://avatars.mds.yandex.net/i?id=d4364af59062c08ad595392aafd5d386d47034fb-4935395-images-thumbs&n=13',content:`<h3>Зачем нужны снегозадержатели?</h3><p>Они предотвращают лавинообразный сход снега с крыши, который может повредить водостоки, фасад, припаркованные автомобили и, самое главное, травмировать людей.</p><h3>Виды снегозадержателей</h3><ul><li><strong>Трубчатые</strong> — самые надёжные и распространённые. Состоят из кронштейнов и двух труб. Подходят для металлочерепицы, профнастила, фальцевой кровли.</li><li><strong>Уголковые (пластинчатые)</strong> — для фальцевой кровли и мягкой черепицы. Представляют собой треугольные пластины из оцинкованной стали.</li><li><strong>Решётчатые</strong> — для высоких снеговых нагрузок. Устанавливаются на кровлях с большим уклоном.</li><li><strong>Бугели (точечные)</strong> — для мягкой кровли, задерживают небольшие объёмы снега, предотвращая его сползание.</li></ul><h3>Правила монтажа</h3><ul><li>Устанавливаются над несущей стеной, а не на карнизном свесе. Иначе снег может вырвать их вместе с кровельным материалом.</li><li>Первый ряд — на расстоянии 30-50 см от карниза.</li><li>При длине ската более 5-6 метров устанавливают второй ряд снегозадержателей.</li><li>Крепление ТОЛЬКО в обрешётку, а не в кровельный материал! Для этого используются длинные саморезы с уплотнительными резинками.</li></ul><div class="highlight-box"><strong>Важно!</strong> Не экономьте на снегозадержателях — их отсутствие может привести к серьёзным последствиям и судебным искам.</div>`},
+                {title:'Демонтаж конструкций на высоте',excerpt:'Как безопасно демонтировать старые или аварийные конструкции.',category:'Технологии',image:'https://tyumen.na-vysote.pro/sites/default/files/kcfinder/images/montazh-dyuralajta-1024x576.jpg',content:`<h3>Что можно демонтировать</h3><ul><li>Старые кондиционеры и кронштейны.</li><li>Рекламные баннеры, вывески, объёмные буквы.</li><li>Водосточные системы и элементы кровли.</li><li>Аварийные конструкции (балконы, козырьки, лепнина).</li><li>Остекление и оконные рамы.</li></ul><h3>Методы демонтажа</h3><ul><li><strong>Ручной демонтаж</strong> — с использованием ручного инструмента (ключи, отвёртки, гвоздодёры).</li><li><strong>Механизированный</strong> — болгарка, перфоратор, гайковёрт. Требует особой осторожности и искробезопасности.</li><li><strong>Газорезка</strong> — для металлоконструкций. Требует соблюдения строжайших правил пожарной безопасности.</li><li><strong>Алмазная резка</strong> — для железобетона и кирпича. Минимум пыли и вибрации.</li></ul><h3>Особенности и техника безопасности</h3><ul><li>Обязательное ограждение опасной зоны внизу.</li><li>Контролируемый спуск демонтированных элементов на верёвках (использование полиспаста или лебёдки).</li><li>Сортировка строительного мусора (металл, бетон, пластик) для дальнейшей утилизации.</li><li>Организация вывоза строительного мусора с объекта.</li></ul><div class="highlight-box"><strong>Важно!</strong> Демонтаж на высоте — один из самых опасных видов работ. Доверяйте его только профессионалам с опытом и допусками.</div>`}
+            ],
+            5: [
+                {title:'Техника безопасности при работе на высоте',excerpt:'Основные правила, которые спасают жизни.',category:'Безопасность',image:'https://avatars.dzeninfra.ru/get-zen_doc/271828/pub_65f95c5d6aa5424e8d13ed09_65f95fc2635df651e4068967/scale_1200',content:`<h3>Золотые правила безопасности</h3><ul><li><strong>Сертифицированное снаряжение:</strong> Используйте только промышленное альпинистское снаряжение, прошедшее сертификацию и регулярные проверки.</li><li><strong>Визуальный осмотр перед каждым использованием:</strong> Проверяйте верёвки на повреждения оплётки, карабины — на трещины и исправность муфт, обвязку — на потёртости.</li><li><strong>Напарник:</strong> Никогда не работайте в одиночку. Напарник страхует, подаёт инструмент и может оказать первую помощь.</li><li><strong>Ограждение опасной зоны:</strong> Внизу под местом работы обязательно должна быть огорожена зона сигнальной лентой.</li><li><strong>Учёт погодных условий:</strong> При сильном ветре, дожде, снегопаде или грозе работы немедленно прекращаются.</li></ul><h3>Что должно быть в аптечке альпиниста</h3><ul><li>Бинты стерильные и эластичные.</li><li>Жгут кровоостанавливающий (обязательно!).</li><li>Антисептик (хлоргексидин, перекись водорода).</li><li>Обезболивающее средство.</li><li>Атравматические ножницы, перчатки.</li><li>Спасательное покрывало (изотермическое).</li></ul><div class="highlight-box"><strong>Помните:</strong> Безопасность — это не просто правила, это ваша жизнь и здоровье. Никакая экономия времени или денег не стоит травмы.</div>`},
+                {title:'Как часто нужно мыть фасад',excerpt:'Рекомендации по периодичности мойки фасадов.',category:'Советы',image:'https://gde.ru/images/img_ru/700/25/61/256186d9dc6c60248c9269cff7a86866.webp',content:`<h3>Факторы, влияющие на загрязнение фасада</h3><ul><li><strong>Близость к дорогам и промышленным зонам</strong> — выхлопные газы и копоть оседают на стенах.</li><li><strong>Материал фасада</strong> — светлые тона и пористые материалы (кирпич, штукатурка) пачкаются быстрее, чем гладкие и тёмные.</li><li><strong>Наличие деревьев и птиц</strong> — пыльца, листья, птичий помёт.</li><li><strong>Климатические условия</strong> — частые дожди и высокая влажность способствуют появлению мха и плесени.</li></ul><h3>Рекомендуемая периодичность</h3><ul><li><strong>Офисные и жилые здания (до 10 этажей)</strong> — 1-2 раза в год (весной и осенью).</li><li><strong>Здания у оживлённых дорог</strong> — 2-3 раза в год.</li><li><strong>Торговые центры и здания с высокой проходимостью</strong> — 3-4 раза в год или по мере загрязнения.</li><li><strong>Промышленные объекты</strong> — по индивидуальному графику, в зависимости от типа производства.</li></ul><h3>Признаки, что пора мыть фасад</h3><ul><li>Потеря цвета и «свежести» здания.</li><li>Появление высолов (белых пятен) на кирпичной кладке.</li><li>Плесень, грибок, мох на стенах (особенно с северной стороны).</li><li>Общее ощущение «неухоженности».</li></ul><div class="highlight-box"><strong>Совет:</strong> Регулярная мойка не только улучшает внешний вид, но и продлевает срок службы фасада, удаляя агрессивные загрязнения.</div>`},
+                {title:'Виды верёвок для промальпа',excerpt:'Какую верёвку выбрать для высотных работ.',category:'Снаряжение',image:'https://verticalshop.ru/upload/iblock/96d/2015gkxwjug31xys2tramxxxomdqgndg/tipy_alpinistskoy_verevki.jpg',content:`<h3>Типы верёвок</h3><ul><li><strong>Статические (Static / Low Stretch)</strong> — минимальное растяжение под нагрузкой (менее 5%). Используются для подъёма и спуска, навески перил, спасработ. Это основной тип верёвки для промальпа.</li><li><strong>Динамические (Dynamic)</strong> — растягиваются под нагрузкой (до 40%), гасят энергию рывка при срыве. Используются для страховки, но не для постоянного подъёма/спуска.</li></ul><h3>Диаметр верёвки</h3><ul><li><strong>10-11 мм</strong> — универсальный диаметр для большинства высотных работ. Хорошо фиксируется в зажимах и спусковых устройствах.</li><li><strong>11.5-13 мм</strong> — для промышленного альпинизма, где важна повышенная износостойкость и прочность.</li><li><strong>8-9 мм</strong> — сдвоенные верёвки (двойник), лёгкие, для опытных альпинистов на больших перепадах высот.</li></ul><h3>Пропитка</h3><p>Верёвки с водоотталкивающей пропиткой (маркировка Dry) обязательны для работы на улице. Они не впитывают воду, не обмерзают зимой и служат дольше.</p><h3>Уход за верёвкой</h3><ul><li>Хранить в сухом проветриваемом месте, в чехле, защищённом от ультрафиолета.</li><li>Стирать только вручную или в специальных машинках для верёвок (без отжима!).</li><li>Избегать контакта с химикатами, маслами, острыми краями.</li></ul><div class="highlight-box"><strong>Срок службы:</strong> 3-5 лет при активном использовании, до 10 лет при редком (но не более 12 лет с даты производства).</div>`}
+            ]
+        };
+
+        let currentPage = 1;
+
+        function renderArticles(page) {
+            const container = document.getElementById('articles-container');
+            const articles = articlesData[page] || [];
+            let html = '';
+            articles.forEach(article => {
+                html += `<div class="article-card"><div class="article-card__image"><img src="${article.image}" alt="${article.title}"><span class="article-card__category">${article.category}</span></div><div class="article-card__content"><h3 class="article-card__title">${article.title}</h3><p class="article-card__excerpt">${article.excerpt}</p><span class="article-card__link" onclick='openArticleModal(${JSON.stringify(article).replace(/'/g, "\\'")})'>Читать <i class="fas fa-arrow-right"></i></span></div></div>`;
+            });
+            container.innerHTML = html || '<p style="text-align:center;padding:40px;color:var(--gray);">Выберите страницу</p>';
+            document.querySelectorAll('.pagination-btn').forEach(btn => btn.classList.toggle('active', parseInt(btn.dataset.page) === page));
+        }
+
+        function openArticleModal(article) {
+            document.getElementById('modal-title').textContent = article.title;
+            document.getElementById('modal-body').innerHTML = article.content;
+            document.getElementById('article-modal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('article-modal').classList.remove('active'); }
+
+        function getPageFromUrl() { const p = parseInt(new URLSearchParams(window.location.search).get('page')); return (p >= 1 && p <= 5) ? p : 1; }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            currentPage = getPageFromUrl();
+            renderArticles(currentPage);
+            document.querySelectorAll('.pagination-btn').forEach(btn => btn.addEventListener('click', function() {
+                const page = parseInt(this.dataset.page);
+                currentPage = page;
+                renderArticles(page);
+                const url = new URL(window.location);
+                url.searchParams.set('page', page);
+                window.history.pushState({}, '', url);
+            }));
+            document.getElementById('article-modal').addEventListener('click', e => { if (e.target === document.getElementById('article-modal')) closeModal(); });
+        });
+
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    </script>
+</body>
+</html>
