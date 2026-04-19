@@ -374,3 +374,44 @@ document.addEventListener('click', function(e) {
         });
     }
 });
+
+// Открытие выпадающего меню по клику на мобильных устройствах
+document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+    const link = item.querySelector('.nav-link');
+    if (!link) return;
+
+    link.addEventListener('click', function(e) {
+        // Проверяем, находимся ли мы на мобильном устройстве (ширина экрана до 768px)
+        if (window.innerWidth <= 768) {
+            e.preventDefault(); // Отменяем переход по ссылке
+
+            // Закрываем другие открытые меню
+            document.querySelectorAll('.nav-item.dropdown').forEach(other => {
+                if (other !== item) {
+                    other.classList.remove('active');
+                }
+            });
+
+            // Переключаем текущее меню
+            item.classList.toggle('active');
+        }
+    });
+});
+
+// Закрытие меню при клике вне
+document.addEventListener('click', function(e) {
+    if (!e.target.closest('.nav-item.dropdown')) {
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+            item.classList.remove('active');
+        });
+    }
+});
+
+// Закрытие меню при изменении размера экрана (если стало больше 768px)
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        document.querySelectorAll('.nav-item.dropdown').forEach(item => {
+            item.classList.remove('active');
+        });
+    }
+});
